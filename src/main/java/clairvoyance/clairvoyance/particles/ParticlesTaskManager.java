@@ -29,8 +29,8 @@ public class ParticlesTaskManager {
         this.positionTo = positionTo;
         this.positionFrom = positionFrom;
         this.plugin = plugin;
-        this.logger = plugin.getLogger();
-        this.vectorBetween =  positionTo.sub(positionFrom);
+        logger = plugin.getLogger();
+        vectorBetween =  positionTo.sub(positionFrom);
     }
 
     public void generateParticles() {

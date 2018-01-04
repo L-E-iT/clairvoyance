@@ -31,17 +31,19 @@ class ParticleGeneratorTask implements Consumer<Task> {
     public ParticleGeneratorTask(Vector3d positionTo, Vector3d positionFrom,
                                  Player player, Clairvoyance plugin) {
         this.player = player;
-        this.arrived = false;
         this.plugin = plugin;
-        this.logger = plugin.getLogger();
         this.positionTo = positionTo;
         this.positionFrom = positionFrom;
-        this.distanceBetweenPoints = positionFrom.distance(positionTo);
-        this.addToX = abs(positionTo.getX() - positionFrom.getX())/distanceBetweenPoints;
-        this.addToY = abs(positionTo.getY() - positionFrom.getY())/distanceBetweenPoints;
-        this.addToZ = abs(positionTo.getZ() - positionFrom.getZ())/distanceBetweenPoints;
-        this.particleEffect = ParticleEffect.builder().type(ParticleTypes.REDSTONE_DUST)
-                .quantity(10)
+        arrived = false;
+        logger = plugin.getLogger();
+        distanceBetweenPoints = positionFrom.distance(positionTo);
+        addToX = abs(positionTo.getX() - positionFrom.getX())/distanceBetweenPoints;
+        addToY = abs(positionTo.getY() - positionFrom.getY())/distanceBetweenPoints;
+        addToZ = abs(positionTo.getZ() - positionFrom.getZ())/distanceBetweenPoints;
+        Vector3d offsetVector = Vector3d.from(.25,.25,.25);
+        particleEffect = ParticleEffect.builder().type(ParticleTypes.REDSTONE_DUST)
+                .quantity(20)
+                .offset(offsetVector)
                 .option(ParticleOptions.COLOR, Color.YELLOW)
                 .build();
     }
@@ -49,15 +51,15 @@ class ParticleGeneratorTask implements Consumer<Task> {
 
     @Override
     public void accept(Task task) {
-        if (this.arrived || !player.isOnline()) {
+        if (arrived || !player.isOnline()) {
             task.cancel();
             logger.info(task.getName()+ " for clairvoyance as finished!");
         } else {
             Vector3d playerPosition = Sponge.getServer().getPlayer(player.getUniqueId()).get().getLocation().getPosition();
-            this.distanceBetweenPoints = playerPosition.distance(positionTo);
-            this.addToX = (positionTo.getX() - playerPosition.getX())/distanceBetweenPoints;
-            this.addToY = (positionTo.getY() - playerPosition.getY())/distanceBetweenPoints;
-            this.addToZ = (positionTo.getZ() - playerPosition.getZ())/distanceBetweenPoints;
+            distanceBetweenPoints = playerPosition.distance(positionTo);
+            addToX = (positionTo.getX() - playerPosition.getX())/distanceBetweenPoints;
+            addToY = (positionTo.getY() - playerPosition.getY())/distanceBetweenPoints;
+            addToZ = (positionTo.getZ() - playerPosition.getZ())/distanceBetweenPoints;
 
             spawnParticlesOnPlayer(playerPosition);
             Vector3d spawnPosition = playerPosition.clone();
@@ -67,7 +69,7 @@ class ParticleGeneratorTask implements Consumer<Task> {
                     break;
                 }
                 if (playerPosition.distance(positionTo) < 5)
-                    this.arrived = true;
+                    arrived = true;
                     spawnFinishParticles(positionTo);
                 spawnParticlesOnPath(spawnPosition);
             }
