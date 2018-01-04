@@ -1,0 +1,74 @@
+---- Minecraft Crash Report ----
+
+WARNING: coremods are present:
+  SpongeCoremod (sponge.jar)
+Contact their authors BEFORE contacting forge
+
+// Sorry :(
+
+Time: 1/2/18 5:53 PM
+Description: Exception generating new chunk
+
+java.lang.OutOfMemoryError: Java heap space
+	at net.minecraft.world.chunk.ChunkPrimer.<init>(SourceFile:13)
+	at org.spongepowered.common.util.gen.ChunkBufferPrimer.<init>(ChunkBufferPrimer.java:44)
+	at net.minecraft.world.gen.ChunkGeneratorOverworld.populate(ChunkGeneratorOverworld.java:878)
+	at org.spongepowered.common.world.gen.SpongeChunkGenerator.func_185932_a(SpongeChunkGenerator.java:247)
+	at net.minecraft.world.gen.ChunkProviderServer.func_186025_d(ChunkProviderServer.java:143)
+	at net.minecraft.server.MinecraftServer.prepareSpawnArea(MinecraftServer.java:3602)
+	at org.spongepowered.common.world.WorldManager.createWorldFromProperties(WorldManager.java:814)
+	at org.spongepowered.common.world.WorldManager.loadAllWorlds(WorldManager.java:759)
+	at net.minecraft.server.MinecraftServer.func_71247_a(MinecraftServer.java:3552)
+	at net.minecraft.server.dedicated.DedicatedServer.func_71197_b(DedicatedServer.java:270)
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:484)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Server thread
+Stacktrace:
+	at net.minecraft.world.chunk.ChunkPrimer.<init>(SourceFile:13)
+	at org.spongepowered.common.util.gen.ChunkBufferPrimer.<init>(ChunkBufferPrimer.java:44)
+	at net.minecraft.world.gen.ChunkGeneratorOverworld.populate(ChunkGeneratorOverworld.java:878)
+	at org.spongepowered.common.world.gen.SpongeChunkGenerator.func_185932_a(SpongeChunkGenerator.java:247)
+
+-- Chunk to be generated --
+Details:
+	Location: -13,-3
+	Position hash: -8589934605
+	Generator: SpongeChunkGeneratorForge{World=WorldServer{LevelName=world, DimensionId=0, DimensionType=minecraft:overworld}}
+Stacktrace:
+	at net.minecraft.world.gen.ChunkProviderServer.func_186025_d(ChunkProviderServer.java:143)
+	at net.minecraft.server.MinecraftServer.prepareSpawnArea(MinecraftServer.java:3602)
+	at org.spongepowered.common.world.WorldManager.createWorldFromProperties(WorldManager.java:814)
+
+-- Sponge PhaseTracker --
+Details:
+	Cause Stack: [Empty stack]
+Stacktrace:
+	at net.minecraft.server.MinecraftServer.handler$onCrashReport$zja000(MinecraftServer.java:4017)
+	at net.minecraft.server.MinecraftServer.func_71230_b(MinecraftServer.java:887)
+	at net.minecraft.server.dedicated.DedicatedServer.func_71230_b(DedicatedServer.java:370)
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:552)
+	at java.lang.Thread.run(Thread.java:748)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.12.2
+	Operating System: Windows 8.1 (x86) version 6.3
+	Java Version: 1.8.0_131, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) Client VM (mixed mode), Oracle Corporation
+	Memory: 67968 bytes (0 MB) / 259522560 bytes (247 MB) up to 259522560 bytes (247 MB)
+	JVM Flags: 0 total; 
+	IntCache: cache: 1, tcache: 1, allocated: 12, tallocated: 94
+	FML: ~~ERROR~~ NoClassDefFoundError: net/minecraftforge/common/util/TextTable$1
+	Loaded coremods (and transformers): 
+SpongeCoremod (sponge.jar)
+  org.spongepowered.common.launch.transformer.SpongeSuperclassTransformer
+	Profiler Position: N/A (disabled)
+	Player Count: 0 / 20; []
+	Is Modded: Definitely; Server brand changed to 'fml,forge,sponge'
+	Type: Dedicated Server (map_server.txt)
