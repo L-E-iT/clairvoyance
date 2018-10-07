@@ -3,12 +3,17 @@ package clairvoyance.clairvoyance;
 import clairvoyance.clairvoyance.commands.CommandRegister;
 import clairvoyance.clairvoyance.config.ConfigManager;
 import clairvoyance.clairvoyance.config.PluginConfig;
+import clairvoyance.clairvoyance.particles.ParticlesTracker;
+import clairvoyance.clairvoyance.pathfinding.PathfindingTask;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.block.ChangeBlockEvent;
+import org.spongepowered.api.event.cause.Cause;
+import org.spongepowered.api.event.cause.EventContext;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.plugin.Plugin;
@@ -44,6 +49,7 @@ public class Clairvoyance {
     private PluginContainer instance;
 
     private PluginConfig pluginConfig;
+    private ParticlesTracker particlesTracker;
 
     public Logger getLogger() {
         return logger;
@@ -61,6 +67,9 @@ public class Clairvoyance {
     public Game getGame() {
         return game;
     }
+    public ParticlesTracker getParticlesTracker() {
+        return particlesTracker;
+    }
 
     @Listener
     public void onGameInit(GameInitializationEvent event){
@@ -71,10 +80,18 @@ public class Clairvoyance {
     }
 
     @Listener
+    public void onInitialize(final GameInitializationEvent event){
+        PathfindingTask.register(this, game.getRegistry());
+    }
+
+    @Listener
     public void onServerStart(GameStartedServerEvent event) {
         // Run logger when server is loaded.
         this.logger.info("Clairvoyance has loaded!");
         this.game = game;
+        // Start our particlesTracker
+        this.particlesTracker = ParticlesTracker.getInstance();
+
         // Register our commands
         CommandRegister.registerCommands(this);
     }

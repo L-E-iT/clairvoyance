@@ -19,18 +19,15 @@ public class ParticlesTaskManager {
     private Vector3d positionTo;
     private Vector3d positionFrom;
     private Player player;
-    private boolean arrived;
     private Clairvoyance plugin;
-    private Logger logger;
-    private Vector3d vectorBetween;
+    private ParticlesTracker particlesTracker;
 
     public ParticlesTaskManager(Vector3d positionTo, Vector3d positionFrom, Player player, Clairvoyance plugin) {
         this.player = player;
         this.positionTo = positionTo;
         this.positionFrom = positionFrom;
         this.plugin = plugin;
-        logger = plugin.getLogger();
-        vectorBetween =  positionTo.sub(positionFrom);
+        particlesTracker = plugin.getParticlesTracker();
     }
 
     public void generateParticles() {
@@ -39,6 +36,7 @@ public class ParticlesTaskManager {
                 .interval(1, TimeUnit.SECONDS)
                 .name("Particles Generator")
                 .submit(plugin);
+        particlesTracker.addActivePlayerParticleTaskUUIDs(player.getUniqueId(), task.getUniqueId());
     }
 
 }
